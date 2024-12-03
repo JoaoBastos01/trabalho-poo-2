@@ -23,7 +23,7 @@ public class Match {
 
         frame.setVisible(true);
 
-        System.out.println("Partida inicializada");
+        System.out.println("Partida inicializada.");
 
 
     }
