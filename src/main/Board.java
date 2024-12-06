@@ -248,6 +248,7 @@ public class Board extends JPanel {
         }
     }
 
+
     /**
      * Método com o propósito de renderizar o tabuleiro, as peças destacadas e as peças no JFrame criado na classe Match (Partida)
      */
