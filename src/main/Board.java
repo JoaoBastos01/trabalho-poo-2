@@ -135,7 +135,6 @@ public class Board extends JPanel {
         if (piece != null && piece.name.equals("King")) {
             System.out.println(piece.isWhite ? "Black Wins!" : "White Wins!");
             isGameOver = true;
-            return; // End game immediately if king is captured
         }
     }
 
@@ -164,7 +163,7 @@ public class Board extends JPanel {
             return false;
         }
         if (move.piece.name.equals("King") && checkscanner.isKingChecked(move)) {
-            return false; // Disallow the king's move if it results in a check
+            return false;
         }
 
 

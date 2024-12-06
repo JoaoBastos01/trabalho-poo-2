@@ -91,18 +91,18 @@ public class CheckScanner {
     }
 
     private boolean hitByKnight(int col, int row, Piece king,int kingCol,int kingRow) {
-        return checkKnight(board.getPiece(kingCol - 1, kingRow - 2), king, col, row) ||
-                checkKnight(board.getPiece(kingCol + 1, kingRow - 2), king, col, row) ||
-                checkKnight(board.getPiece(kingCol + 2, kingRow - 1), king, col, row) ||
-                checkKnight(board.getPiece(kingCol + 2, kingRow + 1), king, col, row) ||
-                checkKnight(board.getPiece(kingCol + 1, kingRow + 2), king, col, row) ||
-                checkKnight(board.getPiece(kingCol - 1, kingRow + 2), king, col, row) ||
-                checkKnight(board.getPiece(kingCol - 2, kingRow + 1), king, col, row) ||
-                checkKnight(board.getPiece(kingCol - 2, kingRow - 1), king, col, row);
+        return checkKnight(board.getPiece(kingCol - 1, kingRow - 2), king, kingCol - 1, kingRow - 2) ||
+                checkKnight(board.getPiece(kingCol + 1, kingRow - 2), king, kingCol + 1, kingRow - 2) ||
+                checkKnight(board.getPiece(kingCol + 2, kingRow - 1), king, kingCol + 2, kingRow - 1) ||
+                checkKnight(board.getPiece(kingCol + 2, kingRow + 1), king, kingCol + 2, kingRow + 1) ||
+                checkKnight(board.getPiece(kingCol + 1, kingRow + 2), king, kingCol + 1, kingRow + 2) ||
+                checkKnight(board.getPiece(kingCol - 1, kingRow + 2), king, kingCol - 1, kingRow + 2) ||
+                checkKnight(board.getPiece(kingCol - 2, kingRow + 1), king, kingCol - 2, kingRow + 1) ||
+                checkKnight(board.getPiece(kingCol - 2, kingRow - 1), king, kingCol - 2, kingRow - 1);
     }
 
     private boolean checkKnight(Piece p, Piece k, int col, int row) {
-        return p != null && !board.sameTeam(p, k) && p.name.equals("Knight") && !(p.col == col) && p.row == row;
+        return p != null && !board.sameTeam(p, k) && p.name.equals("Knight") && p.col == col && p.row == row;
     }
 
     private boolean hitByKing(Piece king, int kingCol, int kingRow) {
