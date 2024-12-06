@@ -233,6 +233,9 @@ public class Board extends JPanel {
 
     }
 
+    /**
+     * Método updateGameState, que tem como função principal atualizar o estado do jogo, através de uma determinação do status do rei jogador atual
+     */
     private void updateGameState() {
         Piece king = findKing(isWhiteToMove);
 
