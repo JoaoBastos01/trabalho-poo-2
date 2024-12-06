@@ -96,6 +96,13 @@ public class Board extends JPanel {
 
         capture(move.capture);
 
+            Piece king = findKing(isWhiteToMove);
+            if (king == null) {
+                System.out.println(isWhiteToMove ? "Black Wins!" : "White Wins!");
+                isGameOver = true;
+                return;
+            }
+
         isWhiteToMove = !isWhiteToMove;
 
         updateGameState();
@@ -125,11 +132,16 @@ public class Board extends JPanel {
      */
     public void capture(Piece piece) {
         pieceList.remove(piece);
+        if (piece != null && piece.name.equals("King")) {
+            System.out.println(piece.isWhite ? "Black Wins!" : "White Wins!");
+            isGameOver = true;
+            return; // End game immediately if king is captured
+        }
     }
 
     /**
-     * Método que faz a verificação geral se o movimento é válido, utilizando os métodos respectivos para verificar se a peça a ser capturada é do mesmo time,
-     * se o movimento é válido, e se o movimento colide com alguma outra peça
+     * Método que faz a verificação geral se o movimento é válido, utilizando os métodos respectivos para verificar se o jogo acabou, e se a peça a ser capturada é do mesmo time,
+     * se o movimento é válido, se o movimento colide com alguma outra peça, e se o rei está em xeque
      */
     public boolean isValidMove(Move move) {
 
@@ -150,6 +162,9 @@ public class Board extends JPanel {
         }
         if (checkscanner.isKingChecked(move)) {
             return false;
+        }
+        if (move.piece.name.equals("King") && checkscanner.isKingChecked(move)) {
+            return false; // Disallow the king's move if it results in a check
         }
 
 
@@ -221,6 +236,7 @@ public class Board extends JPanel {
 
     private void updateGameState() {
         Piece king = findKing(isWhiteToMove);
+
         if (checkscanner.isGameOver(king)) {
             if (checkscanner.isKingChecked(new Move(this, king, king.col, king.row))) {
                 System.out.println(isWhiteToMove ? "Black Wins!" : "White Wins!");
