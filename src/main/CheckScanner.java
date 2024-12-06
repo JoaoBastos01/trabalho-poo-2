@@ -18,12 +18,15 @@ public class CheckScanner {
     }
 
     /**
-     * Método isKingChecked, que tem como função localizar o rei,
+     * Método isKingChecked, que tem como função localizar o rei, e detectar se ele esta em xeque, ou seja, ameaçado de ser capturado
      * @param move
      * @return
      */
     public boolean isKingChecked(Move move) {
 
+        /**
+         * Localiza o rei no tabuleiro através de um método findKing (encontrarRei), e assegura ue o rei vai ser diferente de nulo, int
+         */
         Piece king = board.findKing(move.piece.isWhite);
         assert king != null;
 
@@ -119,12 +122,12 @@ public class CheckScanner {
 
     private  boolean hitByPawn(int col, int row, Piece king, int kingCol, int kingRow) {
         int colorVal = king.isWhite ? -1 : 1;
-        return checkPawn(board.getPiece(kingCol + 1, kingRow + colorVal), king, col, row) ||
-                checkPawn(board.getPiece(kingCol - 1, kingRow + colorVal), king, col, row);
+        return checkPawn(board.getPiece(kingCol + 1, kingRow + colorVal), king, kingCol + 1, kingRow + colorVal) ||
+                checkPawn(board.getPiece(kingCol - 1, kingRow + colorVal), king, kingCol - 1, kingRow + colorVal);
     }
 
     private boolean checkPawn(Piece p, Piece k, int col, int row) {
-        return p != null && !board.sameTeam(p, k) && p.name.equals("Pawn") && !(p.col == col) && p.row == row;
+        return p != null && !board.sameTeam(p, k) && p.name.equals("Pawn") && p.col == col && p.row == row;
     }
 
     public boolean isGameOver(Piece king) {
