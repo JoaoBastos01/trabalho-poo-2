@@ -3,14 +3,7 @@
  */
 package main;
 
-/**
- * Importa todas as classes de peças do xadrez do pacote "pieces"
- */
 import pieces.*;
-
-/**
- * Importa as bibliotecas para GUI e estruturas de dados
- */
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,10 +34,19 @@ public class Board extends JPanel {
      */
     public Piece selectedPiece;
 
+
     /**
      * Cria um manipulador de entrada específica para esta instância da classe tabuleiro (Board)
      */
     Input input = new Input(this);
+
+    /**
+     * Cria um Scanner para os cheques, usando como parâmetro o próprio tabuleiro que está inserido
+     */
+    CheckScanner checkscanner = new CheckScanner(this);
+
+    private boolean isWhiteToMove = true;
+    private boolean isGameOver = false;
 
     /**
      * Construtor da classe tabuleiro, definindo as configurações iniciais do tabuleiro
@@ -82,6 +84,7 @@ public class Board extends JPanel {
 
         if (move.piece.name.equals("Pawn")) {
             movePawn(move);
+
         } else {
 
         move.piece.col = move.newCol;
@@ -92,6 +95,10 @@ public class Board extends JPanel {
         move.piece.isFirstMove = false;
 
         capture(move.capture);
+
+        isWhiteToMove = !isWhiteToMove;
+
+        updateGameState();
         }
 
     }
@@ -108,6 +115,9 @@ public class Board extends JPanel {
         move.piece.isFirstMove = false;
 
         capture(move.capture);
+
+        isWhiteToMove = !isWhiteToMove;
+
     }
 
     /**
@@ -122,6 +132,13 @@ public class Board extends JPanel {
      * se o movimento é válido, e se o movimento colide com alguma outra peça
      */
     public boolean isValidMove(Move move) {
+
+        if (isGameOver) {
+            return false;
+        }
+        if(move.piece.isWhite != isWhiteToMove){
+            return false;
+        }
         if (sameTeam(move.piece, move.capture)) {
             return false;
         }
@@ -131,6 +148,10 @@ public class Board extends JPanel {
         if (move.piece.moveCollidesWithPiece(move.newCol, move.newRow)) {
             return false;
         }
+        if (checkscanner.isKingChecked(move)) {
+            return false;
+        }
+
 
 
         return true;
@@ -144,6 +165,15 @@ public class Board extends JPanel {
             return false;
         }
         return p1.isWhite == p2.isWhite;
+    }
+
+    Piece findKing(boolean isWhite) {
+        for (Piece piece : pieceList) {
+            if (isWhite == piece.isWhite && piece.name.equals("King")) {
+                return piece;
+            }
+        }
+        return null;
     }
 
     /**
@@ -187,6 +217,17 @@ public class Board extends JPanel {
         pieceList.add(new Pawn(this, 6, 6, true));
         pieceList.add(new Pawn(this, 7, 6, true));
 
+    }
+
+    private void updateGameState() {
+        Piece king = findKing(isWhiteToMove);
+        if (checkscanner.isGameOver(king)) {
+            if (checkscanner.isKingChecked(new Move(this, king, king.col, king.row))) {
+                System.out.println(isWhiteToMove ? "Black Wins!" : "White Wins!");
+            } else {
+                System.out.println("Impasse(Stalemate)!");
+            }
+        }
     }
 
     /**

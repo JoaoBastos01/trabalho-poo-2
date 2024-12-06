@@ -10,6 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+
+/**
+ * Classe pública "Input" (Entrada) que tem como função principal adicionar a adaptação dos eventos clique e arrasto do mouse para realizar os movimentos no tabuleiro
+ */
 public class Input extends MouseAdapter {
 
     /**
